@@ -4,8 +4,6 @@ import requests
 
 BASE_URL = 'https://backend-challenge-winter-2017.herokuapp.com/customers.json'
 
-type_dict = {"string": str, "number": int, "boolean": bool}
-
 
 def is_valid_length(word, length_validation_obj):
     """Returns whether word is valid based on JSON object for length"""
@@ -20,6 +18,9 @@ def is_valid_length(word, length_validation_obj):
 def is_valid_type(customer_val, type_val):
     """Returns whether the value corresponding to
        a customer's data fields are of valid type"""
+
+    type_dict = {"string": str, "number": int, "boolean": bool}
+
     if type_dict.get(type_val) == type(customer_val):
         return True
     else:
