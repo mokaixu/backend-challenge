@@ -1,9 +1,10 @@
-### backend-challenge
-Backend Challenge for the 2017 Winternship at Shopify Completed by Mokai (Monica) Xu
+### Backend Challenge - Shopify Winternship 2017
+Completed by Mokai Xu
+
 Code Reviewed by Felix Guo
+
 Coded in Python3
 
-[b]
 
 Output:
 ```

@@ -29,7 +29,7 @@ def is_valid_type(customer_val, type_val):
 def get_invalid_customers(all_invalid_customers, page_num):
     """Returns list of invalid customer IDs and their
        corresponding invalid fields"""
-    resp = requests.get(BASE_URL,  data= {'page': page_num})
+    resp = requests.get(BASE_URL,  data={'page': page_num})
     data = json.loads(resp.text)
 
     customers = data['customers']
@@ -62,12 +62,12 @@ def get_invalid_customers(all_invalid_customers, page_num):
                                 'invalid_fields': invalid_customer_fields}
             all_invalid_customers.append(invalid_customer)
 
-            
+
 def get_data(url):
     """Retrieves JSON data from endpoint"""
     resp = requests.get(url)
     return json.loads(resp.text)
-    
+
 
 def main():
 
@@ -83,6 +83,7 @@ def main():
 
     result = json.dumps({"invalid_customers": all_invalid_customers})
     print(result)
+
 
 if __name__ == "__main__":
     main()
