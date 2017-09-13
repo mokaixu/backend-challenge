@@ -4,28 +4,31 @@ import requests
 
 BASE_URL = 'https://backend-challenge-winter-2017.herokuapp.com/customers.json'
 
+type_dict = {"string": str, "number": int, "boolean": bool}
 
-def is_valid_length(obj, word):
-    if 'min' in obj and len(word) < obj['min']:
+
+def is_valid_length(word, length_validation_obj):
+    """Returns whether word is valid based on JSON object for length"""
+    if 'min' in length_validation_obj and len(word) < length_validation_obj['min']:
         return False
-    if 'max' in obj and len(word) > obj['max']:
+    if 'max' in length_validation_obj and len(word) > length_validation_obj['max']:
         return False
     else:
         return True
 
 
 def is_valid_type(customer_val, type_val):
-    if type(customer_val) == str and type_val == 'string':
-        return True
-    if type(customer_val) == int and type_val == 'number':
-        return True
-    if type(customer_val) == bool and type_val == 'boolean':
+    """Returns whether the value corresponding to
+       a customer's data fields are of valid type"""
+    if type_dict.get(type_val) == type(customer_val):
         return True
     else:
         return False
 
 
 def get_invalid_customers(all_invalid_customers, page_num):
+    """Returns list of invalid customer IDs and their
+       corresponding invalid fields"""
     resp = requests.get(BASE_URL,  data= {'page': page_num})
     data = json.loads(resp.text)
 
@@ -36,7 +39,8 @@ def get_invalid_customers(all_invalid_customers, page_num):
         invalid_customer_fields = []
 
         for validation in validations:
-            field = list(validation)[0]
+            # since validation is an object with one key-value pair, we take the first key
+            field = list(validation.keys())[0]
 
             if field in customer and customer[field] is not None:
 
@@ -45,7 +49,7 @@ def get_invalid_customers(all_invalid_customers, page_num):
                     invalid_customer_fields.append(field)
 
                 if ('length' in validation[field] and not
-                        is_valid_length(validation[field]['length'], customer[field])):
+                        is_valid_length(customer[field], validation[field]['length'])):
                     invalid_customer_fields.append(field)
 
             else:
@@ -58,7 +62,9 @@ def get_invalid_customers(all_invalid_customers, page_num):
                                 'invalid_fields': invalid_customer_fields}
             all_invalid_customers.append(invalid_customer)
 
+            
 def get_data(url):
+    """Retrieves JSON data from endpoint"""
     resp = requests.get(url)
     return json.loads(resp.text)
     
@@ -78,5 +84,5 @@ def main():
     result = json.dumps({"invalid_customers": all_invalid_customers})
     print(result)
 
-
-main()
+if __name__ == "__main__":
+    main()
