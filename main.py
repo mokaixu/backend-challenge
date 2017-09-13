@@ -15,20 +15,18 @@ def is_valid_length(obj, word):
 
 
 def is_valid_type(customer_val, type_val):
-    field_type = str(type(customer_val).__name__)
-
-    if field_type == 'str' and type_val == 'string':
+    if type(customer_val) == str and type_val == 'string':
         return True
-    if field_type == 'int' and type_val == 'number':
+    if type(customer_val) == int and type_val == 'number':
         return True
-    if field_type == 'bool' and type_val == 'boolean':
+    if type(customer_val) == bool and type_val == 'boolean':
         return True
     else:
         return False
 
 
 def get_invalid_customers(all_invalid_customers, page_num):
-    resp = requests.get(BASE_URL + '?page=' + str(page_num))
+    resp = requests.get(BASE_URL,  data= {'page': page_num})
     data = json.loads(resp.text)
 
     customers = data['customers']
@@ -60,12 +58,15 @@ def get_invalid_customers(all_invalid_customers, page_num):
                                 'invalid_fields': invalid_customer_fields}
             all_invalid_customers.append(invalid_customer)
 
+def get_data(url):
+    resp = requests.get(url)
+    return json.loads(resp.text)
+    
 
 def main():
-    resp = requests.get(BASE_URL)
-    data = json.loads(resp.text)
-    all_invalid_customers = []
 
+    all_invalid_customers = []
+    data = get_data(BASE_URL)
     total_pages = data['pagination']['total']
     per_page = data['pagination']['per_page']
     current_page = data['pagination']['current_page']
