@@ -1,4 +1,4 @@
-### Backend Challenge - Shopify Winternship 2017
+### Backend Challenge - Shopify Winternship 2018
 Completed by Mokai Xu
 
 Code Reviewed by Felix Guo
